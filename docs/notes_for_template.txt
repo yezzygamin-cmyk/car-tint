@@ -1,0 +1,30 @@
+This project's requirements
+
+Summary:
+This is an extendable website template which can be used for any projects.
+From a simple mechanic shop website with little to none user interaction and admin controls, 
+to fully functional application that can contain baskets, support messaging, multiple users support, live time updated, login/authentication etc.
+
+Goal:
+This project goal is to have a copy paste template that I can quickly use to build up any website on request.
+
+Core Modules:
+    Python 3.11+
+    FastAPI
+    NodeJs
+    React (ReactJS)
+    Docker(or similar)
+    Simple free database
+    More advanced:
+        gunicorn
+        websockets
+        mongodb
+
+Backend:
+    Should contain logging that rotates after each start of the app or new day
+    Functions should be developed in professional way, each function does one action
+
+Frontend:
+    Made easy to debug
+    Structured well
+    Built to support websockets and fastapi calls

@@ -1,0 +1,74 @@
+---
+description: FastAPI conventions, project layout, DB (PostgreSQL), testing, logging
+globs: python/**
+alwaysApply: false
+---
+
+# Backend Python Rules
+
+## Structure
+
+- `app/main.py` – FastAPI app, lifespan, CORS
+- `app/api/` – Base routers (health, etc.)
+- `app/core/` – Config, database, dependencies, logging
+- `app/models/` – SQLAlchemy base, shared models
+- `app/modules/<name>/` – Optional feature modules (auth, basket, etc.)
+- `tests/` – Unit tests (pytest)
+
+## Conventions
+
+- Use async SQLAlchemy. Local: SQLite (`aiosqlite`). Docker/Production: PostgreSQL (`asyncpg`)
+- Pydantic for request/response schemas
+- `Depends(get_db)` for database sessions
+- Enable modules via `ENABLED_MODULES`; register routers conditionally in `main.py`
+- One action per function; keep functions focused and testable
+
+## Error Handling
+
+- Use `HTTPException` from FastAPI for API errors
+- Use appropriate status codes (`status.HTTP_400_BAD_REQUEST`, `status.HTTP_401_UNAUTHORIZED`, etc.)
+- Provide clear `detail` messages for frontend debugging
+
+```python
+from fastapi import HTTPException, status
+
+raise HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail="Email already registered",
+)
+```
+
+## Logging
+
+- Use `app.core.logging` – rotating file handler (daily rotation, new file per day)
+- Call `setup_logging()` in lifespan startup
+- Use `logger = logging.getLogger(__name__)` in modules
+
+## Testing
+
+- Use pytest for unit tests
+- Place tests in `tests/`; mirror `app/` structure (e.g. `tests/test_api/`, `tests/modules/auth/`)
+- Use `pytest-asyncio` for async tests; `httpx.ASGITransport` for API tests
+
+## Production / Optional
+
+- **Gunicorn**: Use for production (e.g. `gunicorn app.main:app -k uvicorn.workers.UvicornWorker`)
+- **MongoDB**: Optional; add as separate module when needed (e.g. `app/modules/mongodb/`)
+
+## Example: New Module
+
+```python
+# app/modules/basket/router.py
+router = APIRouter(prefix="/basket", tags=["basket"])
+
+@router.get("/")
+async def get_basket(db: AsyncSession = Depends(get_db)):
+    ...
+```
+
+```python
+# app/main.py
+if is_module_enabled("basket"):
+    from app.modules.basket.router import router as basket_router
+    app.include_router(basket_router, prefix=settings.api_v1_prefix)
+```

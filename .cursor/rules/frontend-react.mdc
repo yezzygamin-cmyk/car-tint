@@ -1,0 +1,42 @@
+---
+description: React structure, components, API client, routing, styling
+globs: react/**
+alwaysApply: false
+---
+
+# Frontend React Rules
+
+## Structure
+
+- `src/App.tsx` – Routes, providers
+- `src/api/client.ts` – API client (`apiFetch`, typed helpers)
+- `src/components/` – Shared UI (Layout, etc.)
+- `src/pages/` – Page components
+- `src/modules/<name>/` – Optional feature modules (auth, basket, etc.)
+
+## Conventions
+
+- Use `apiFetch<T>(path, options)` from `api/client.ts` for API calls
+- Functional components; extract hooks for reusable logic
+- React Router for routing; `Layout` with `Outlet` for shared shell
+- Module pages live in `src/modules/<name>/` with their own api, context, components
+
+## Easy to Debug
+
+- API errors should be traceable from the frontend: use `apiFetch` which surfaces status, message, and backend `detail` when available
+- Surface errors to the user (toast, inline message) so issues are easy to track when something fails
+
+## Example: API Call
+
+```typescript
+// src/api/client.ts
+export async function getItems(): Promise<Item[]> {
+  return apiFetch<Item[]>('/items');
+}
+```
+
+## Example: New Module
+
+- Add `src/modules/<name>/` with `api.ts`, context (if needed), page components
+- Register routes in `App.tsx`
+- Add nav links in `Layout.tsx` when applicable

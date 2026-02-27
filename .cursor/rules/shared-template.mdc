@@ -1,0 +1,42 @@
+---
+description: Template-wide repo layout, API contract, env vars, modular extendability
+alwaysApply: true
+---
+
+# Shared Template Rules
+
+## Project Structure
+
+- `python/` – FastAPI backend
+- `react/` – React frontend
+- `docker-compose.yml` – One-command run (backend + frontend + PostgreSQL)
+- `docs/` – Project notes and documentation
+
+## Database
+
+- **Local dev**: SQLite (default, no setup). `template.db` in `python/`.
+- **Docker/Production**: PostgreSQL. Set `DATABASE_URL` (e.g. `postgresql+asyncpg://...`).
+
+## API Contract
+
+- Base URL: `/api/v1`
+- JSON request/response
+- Health: `GET /api/v1/health`, `GET /api/v1/health/db`
+- Auth (when enabled): `POST /api/v1/auth/register`, `POST /api/v1/auth/login`
+
+## Environment
+
+- Backend: `DATABASE_URL` (optional; default SQLite for local), `ENABLED_MODULES`, `SECRET_KEY`, `LOG_DIR` (optional; default `logs`)
+- Frontend: `VITE_API_URL` (optional; defaults to `/api` for proxy)
+
+## Production / Optional
+
+- **Gunicorn**: Production ASGI server (e.g. `gunicorn app.main:app -k uvicorn.workers.UvicornWorker`)
+- **MongoDB**: Optional database; add as module when needed
+
+## Extending
+
+- **New module**: Add `python/app/modules/<name>/` and `react/src/modules/<name>/`
+- **Enable module**: Add to `ENABLED_MODULES` (comma-separated, e.g. `auth,basket`)
+- **New endpoint**: Add router in `python/app/api/` or `python/app/modules/<name>/`
+- **New page**: Add route in `react/src/App.tsx`, component in `react/src/pages/` or `react/src/modules/`
