@@ -48,13 +48,14 @@
   text-decoration: none;
 }
 
-.wt-nav {
+/* Desktop nav */
+.wt-nav-desktop {
   display: flex;
   align-items: center;
   gap: 2rem;
 }
 
-.wt-nav a {
+.wt-nav-desktop a {
   color: var(--wt-muted);
   text-decoration: none;
   font-size: 0.9rem;
@@ -62,7 +63,7 @@
   transition: color 0.2s;
 }
 
-.wt-nav a:hover {
+.wt-nav-desktop a:hover {
   color: var(--wt-text);
 }
 
@@ -77,6 +78,189 @@
   background: var(--wt-accent-dim);
 }
 
+/* Hamburger button */
+.wt-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.wt-hamburger:hover {
+  background: var(--wt-surface-elevated);
+}
+
+.wt-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--wt-text);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+
+.wt-hamburger--open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.wt-hamburger--open span:nth-child(2) {
+  opacity: 0;
+}
+
+.wt-hamburger--open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile drawer nav */
+.wt-nav-mobile {
+  display: none;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
+  border-top: 1px solid var(--wt-border);
+}
+
+.wt-nav-mobile--open {
+  max-height: 400px;
+}
+
+.wt-nav-mobile a {
+  display: block;
+  padding: 1rem 1.5rem;
+  color: var(--wt-muted);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--wt-border);
+  transition: color 0.2s, background 0.2s;
+}
+
+.wt-nav-mobile a:hover {
+  color: var(--wt-text);
+  background: var(--wt-surface-elevated);
+}
+
+.wt-nav-mobile-cta {
+  color: var(--wt-accent) !important;
+  font-weight: 600 !important;
+}
+
+@media (max-width: 768px) {
+  .wt-hamburger {
+    display: flex;
+  }
+  .wt-nav-desktop {
+    display: none;
+  }
+  .wt-nav-mobile {
+    display: flex;
+  }
+}
+
+/* ===========================
+   MOBILE BREAKPOINTS
+   =========================== */
+@media (max-width: 768px) {
+  /* Header */
+  .wt-header {
+    padding: 0.75rem 1.25rem;
+  }
+
+  /* Hero */
+  .wt-hero-content {
+    padding: 1.25rem;
+  }
+
+  .wt-hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .wt-btn {
+    width: 100%;
+    justify-content: center;
+    max-width: 320px;
+  }
+
+  .wt-hero-scroll {
+    display: none;
+  }
+
+  /* Stats */
+  .wt-stats-inner {
+    gap: 2rem;
+  }
+
+  /* Sections */
+  .wt-services-preview,
+  .wt-services,
+  .wt-benefits,
+  .wt-gallery,
+  .wt-contact,
+  .wt-services-page {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .wt-section-header {
+    margin-bottom: 2rem;
+  }
+
+  /* Benefits grid: single column on small screens */
+  .wt-benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Contact */
+  .wt-contact-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* Footer */
+  .wt-footer-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  /* Services page */
+  .wt-page-hero {
+    padding: 6rem 1.25rem 3rem;
+  }
+
+  .wt-service-card {
+    padding: 1.5rem;
+  }
+
+  .wt-service-card-header h2 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 400px) {
+  .wt-brand {
+    font-size: 1rem;
+  }
+
+  .wt-hero-title {
+    font-size: 2rem;
+  }
+}
+
+/* ===========================
+   HERO
+   =========================== */
 /* Hero */
 .wt-hero {
   position: relative;
